@@ -9,10 +9,7 @@ import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ReportsService {
-  constructor(
-    @InjectRepository(Reports) private repo: Repository<Reports>,
-    private usersService: UsersService,
-  ) {}
+  constructor(@InjectRepository(Reports) private repo: Repository<Reports>) {}
 
   createReport(reportDto: CreateReportDto, user: Users) {
     const report = this.repo.create(reportDto);
