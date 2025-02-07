@@ -10,7 +10,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  app.use(cookieSession({ key: ['yooyuudoghot1!'] }));
+  app.use(cookieSession({ keys: ['yooyuudoghot1!'] }));
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
