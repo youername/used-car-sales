@@ -13,11 +13,15 @@ import { Users } from './users.entity';
 import { serialize } from 'src/interceptors/serialize.interceptor';
 import { UsersDto } from './dtos/users.dto';
 import { CreateUsersDto } from './dtos/create-user.dto';
+import { AuthService } from './auth.service';
 
 @serialize(UsersDto)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Get(':id')
   findOne(@Param('id') id: number) {
@@ -29,9 +33,16 @@ export class UsersController {
     return this.usersService.findSome(email);
   }
 
-  @Post()
-  async createUser(@Body() body: CreateUsersDto, @Session() session) {
-    const user = await this.usersService.createUser(body.email, body.password);
+  @Post('signup')
+  async signUp(@Body() body: CreateUsersDto, @Session() session) {
+    const user = await this.authService.signUp(body.email, body.password);
+    session.userId = user.id;
+    return user;
+  }
+
+  @Post('signin')
+  async signIn(@Body() body: CreateUsersDto, @Session() session) {
+    const user = await this.authService.signIn(body.email, body.password);
     session.userId = user.id;
     return user;
   }
