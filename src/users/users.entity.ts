@@ -15,4 +15,7 @@ export class Users {
 
   @OneToMany(() => Reports, (reports) => reports.user)
   reports: Reports[];
+
+  @Column({ default: true })
+  admin: boolean;
 }
