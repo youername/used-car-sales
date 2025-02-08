@@ -6,8 +6,8 @@ export class Reports {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: false })
-  approved: boolean;
+  @Column({ default: 'pending' })
+  approved: 'pending' | 'approved' | 'rejected';
 
   @Column()
   price: number;

@@ -17,7 +17,7 @@ export class ReportsService {
     return this.repo.save(report);
   }
 
-  async approve(id: string, approve: boolean) {
+  async approve(id: string, approve: 'approved' | 'pending' | 'rejected') {
     const report = await this.repo.findOne({ where: { id: parseInt(id) } });
 
     if (!report) throw new BadRequestException('report is not found');
