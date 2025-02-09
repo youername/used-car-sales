@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { UsersService } from 'src/users/users.service';
 import { promisify } from 'util';
@@ -7,7 +8,10 @@ const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async signUp(email: string, password: string) {
     const users = await this.usersService.findSome(email);
@@ -34,6 +38,9 @@ export class AuthService {
       throw new BadRequestException('user or password is invailed');
     }
 
-    return user;
+    const payload = { sub: user.id };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }

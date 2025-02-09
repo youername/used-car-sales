@@ -13,10 +13,9 @@ import { UsersService } from './users.service';
 import { Users } from './users.entity';
 import { serialize } from 'src/interceptors/serialize.interceptor';
 import { UsersDto } from './dtos/users.dto';
-import { CreateUsersDto } from './dtos/create-user.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/guards/auth.guard';
 
 @serialize(UsersDto)
 @Controller('users')
@@ -27,7 +26,7 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   whoAmI(@CurrentUser() user: Users) {
     return user;
   }
@@ -40,20 +39,6 @@ export class UsersController {
   @Get()
   findSome(@Query('email') email: string) {
     return this.usersService.findSome(email);
-  }
-
-  @Post('signup')
-  async signUp(@Body() body: CreateUsersDto, @Session() session) {
-    const user = await this.authService.signUp(body.email, body.password);
-    session.userId = user.id;
-    return user;
-  }
-
-  @Post('signin')
-  async signIn(@Body() body: CreateUsersDto, @Session() session) {
-    const user = await this.authService.signIn(body.email, body.password);
-    session.userId = user.id;
-    return user;
   }
 
   @Patch(':id')
