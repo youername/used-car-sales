@@ -1,4 +1,5 @@
 import { IsEmail, IsString } from 'class-validator';
+
 import { Reports } from 'src/reports/reports.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -15,7 +16,4 @@ export class Users {
 
   @OneToMany(() => Reports, (reports) => reports.user)
   reports: Reports[];
-
-  @Column({ default: true })
-  admin: boolean;
 }

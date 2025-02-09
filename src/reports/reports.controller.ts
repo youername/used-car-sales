@@ -14,19 +14,21 @@ import { ReportDto } from './dtos/report.dto';
 import { serialize } from 'src/interceptors/serialize.interceptor';
 import { ApprovalReportDto } from './dtos/approval-reports.dto';
 import { JwtAuthGuard } from 'src/guards/auth.guard';
+import { AdminGuard } from 'src/guards/admin.guard';
 
 @Controller('reports')
-@UseGuards(JwtAuthGuard)
 export class ReportsController {
   constructor(private reportsService: ReportsService) {}
 
   @Post()
   @serialize(ReportDto)
+  @UseGuards(JwtAuthGuard)
   createReport(@Body() body: CreateReportDto, @CurrentUser() user: Users) {
     return this.reportsService.createReport(body, user);
   }
 
   @Patch('/:id')
+  @UseGuards(AdminGuard)
   approve(@Body() body: ApprovalReportDto, @Param() id: string) {
     return this.reportsService.approve(id, body.approve);
   }
