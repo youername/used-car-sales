@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 import { Users } from './users.entity';
 import { serialize } from 'src/interceptors/serialize.interceptor';
 import { UsersDto } from './dtos/users.dto';
-import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUser } from '../decorators/current-user.decorator';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/guards/auth.guard';
 

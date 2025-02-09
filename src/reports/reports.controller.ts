@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateReportDto } from './dtos/create-reports.dto';
 import { ReportsService } from './reports.service';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { Users } from 'src/users/users.entity';
 import { ReportDto } from './dtos/report.dto';
 import { serialize } from 'src/interceptors/serialize.interceptor';
