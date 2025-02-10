@@ -24,4 +24,9 @@ export class UsersService {
     const user = this.findOne(id);
     return this.repo.save({ ...user, ...attr });
   }
+
+  resetPassword(id: number, password: string) {
+    const user = this.findOne(id);
+    return this.repo.save({ ...user, password });
+  }
 }

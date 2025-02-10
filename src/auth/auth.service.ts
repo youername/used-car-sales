@@ -43,4 +43,29 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async resetPassword(email: string, password: string) {
+    const [user] = await this.usersService.findSome(email);
+    if (!user) throw new BadRequestException('user or password is invailed');
+
+    const [salt, storeHash] = user.password.split('.');
+
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+    if (storeHash !== hash.toString('hex')) {
+      throw new BadRequestException('user or password is invailed');
+    }
+
+    return user.id;
+  }
+
+  async resetPasswordSend(id: number, newPassword: string) {
+    const salt = randomBytes(8).toString('hex');
+
+    const hash = (await scrypt(newPassword, salt, 32)) as Buffer;
+
+    const result = salt + '.' + hash.toString('hex');
+
+    return this.usersService.resetPassword(id, result);
+  }
 }
