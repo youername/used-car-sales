@@ -6,4 +6,7 @@ export class UsersDto {
 
   @Expose()
   email: string;
+
+  @Expose()
+  roles: string[];
 }

@@ -6,7 +6,6 @@ import { CreateReportDto } from './dtos/create-reports.dto';
 import { Users } from 'src/users/users.entity';
 import { ApprovalReportDto } from './dtos/approval-reports.dto';
 import { UsersService } from 'src/users/users.service';
-import { JwtAuthGuard } from 'src/guards/auth.guard';
 import { AdminGuard } from 'src/guards/admin.guard';
 
 @Injectable()
@@ -19,9 +18,14 @@ export class ReportsService {
     return this.repo.save(report);
   }
 
-  async approve(id: string, approve: 'approved' | 'pending' | 'rejected') {
-    const report = await this.repo.findOne({ where: { id: parseInt(id) } });
-
+  async approve(id: any, approve: 'approved' | 'pending' | 'rejected') {
+    let reportId: number;
+    if (typeof id === 'object' && id !== null && 'id' in id) {
+      reportId = parseInt(String(id.id), 10);
+    } else {
+      reportId = parseInt(String(id), 10);
+    }
+    const report = await this.repo.findOne({ where: { id: reportId } });
     if (!report) throw new BadRequestException('report is not found');
 
     report.approved = approve;

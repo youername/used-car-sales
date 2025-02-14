@@ -13,7 +13,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(email: string, password: string) {
+  async signUp(email: string, password: string, roles: string[]) {
     const users = await this.usersService.findSome(email);
     if (users.length) throw new BadRequestException('email is alreay used');
 
@@ -22,7 +22,7 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
     const result = salt + '.' + hash.toString('hex');
-    const user = this.usersService.createUser(email, result);
+    const user = this.usersService.createUser(email, result, roles);
     return user;
   }
 
@@ -38,7 +38,7 @@ export class AuthService {
       throw new BadRequestException('user or password is invailed');
     }
 
-    const payload = { sub: user.id };
+    const payload = { sub: user.id, roles: user.roles };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
