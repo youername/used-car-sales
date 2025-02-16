@@ -21,8 +21,11 @@ export class UsersService {
     return this.repo.save(user);
   }
 
-  updateUser(id: number, attr: Partial<Users>) {
-    const user = this.findOne(id);
-    return this.repo.save({ ...user, ...attr });
+  async updateUser(id: number, attr: Partial<Users>) {
+    return this.repo.update(id, attr);
+  }
+
+  async updatePassword(id: number, newPassword: string) {
+    return this.repo.update(id, { password: newPassword });
   }
 }

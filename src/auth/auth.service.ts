@@ -43,4 +43,17 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async resetPassword(email: string, newPassword: string) {
+    const [users] = await this.usersService.findSome(email);
+    if (!users) throw new BadRequestException('email is not exist');
+
+    const salt = randomBytes(8).toString('hex');
+
+    const hash = (await scrypt(newPassword, salt, 32)) as Buffer;
+
+    const result = salt + '.' + hash.toString('hex');
+
+    const user = this.usersService.updatePassword(users.id, newPassword);
+  }
 }

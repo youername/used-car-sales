@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { SignInUserDto } from 'src/users/dtos/signin-user.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -32,5 +33,12 @@ export class AuthController {
   async signIn(@Body() body: SignInUserDto) {
     const user = await this.authService.signIn(body.email, body.password);
     return user;
+  }
+
+  @Post('reset')
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    // resetPassword는 별도 응답값 없이 업데이트 후 성공 메시지를 반환하도록 할 수 있습니다.
+    await this.authService.resetPassword(body.email, body.password);
+    return { message: 'Password reset successfully' };
   }
 }
