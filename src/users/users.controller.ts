@@ -15,7 +15,7 @@ import { serialize } from 'src/interceptors/serialize.interceptor';
 import { UsersDto } from './dtos/users.dto';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/guards/auth.guard';
+import { JwtGuard } from 'src/jwt/jwt.guard';
 
 @serialize(UsersDto)
 @Controller('users')
@@ -26,7 +26,7 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtGuard)
   whoAmI(@CurrentUser() user: Users) {
     return user;
   }
