@@ -6,7 +6,6 @@ import { CreateReportDto } from './dtos/create-reports.dto';
 import { Users } from 'src/users/users.entity';
 import { ApprovalReportDto } from './dtos/approval-reports.dto';
 import { UsersService } from 'src/users/users.service';
-import { AdminGuard } from 'src/guards/admin.guard';
 
 @Injectable()
 export class ReportsService {
