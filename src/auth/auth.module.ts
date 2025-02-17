@@ -12,15 +12,7 @@ import { JwtGuard } from 'src/jwt/jwt.guard';
 
 @Module({
   controllers: [AuthController],
-  imports: [
-    UsersModule,
-    PassportModule,
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '24h' },
-    }),
-  ],
+  imports: [UsersModule],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
