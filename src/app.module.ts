@@ -9,11 +9,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './users/users.entity';
 import { Reports } from './reports/reports.entity';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { jwtConstants } from './auth/const';
 
 @Module({
   imports: [
     ReportsModule,
     UsersModule,
+    PassportModule,
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '24h' },
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
